@@ -1,0 +1,39 @@
+package fr.jamailun.ooapi.odt.text;
+
+import fr.jamailun.ooapi.odt.ODNode;
+import fr.jamailun.ooapi.odt.TextContainer;
+import fr.jamailun.ooapi.xml.XmlNode;
+
+/**
+ * For [text:span] nodes inside a text:p.
+ */
+public class SpanNode extends ODNode implements TextContainer {
+	
+	public static final String XML_NAME = "text:span";
+	
+	private String text;
+	
+	public SpanNode(XmlNode node) {
+		super(node);
+		text = node.getTextContent();
+	}
+	
+	public void setText(String text) {
+		this.text = text;
+	}
+	
+	@Override
+	public String getText() {
+		return text;
+	}
+	
+	@Override
+	public final String getNodeName() {
+		return XML_NAME;
+	}
+	
+	@Override
+	public String toXml(String endl, String indent) {
+		return toXmlPrefix() + ">" + text + endl + indent + "</"+getNodeName()+">";
+	}
+}
