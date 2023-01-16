@@ -10,14 +10,9 @@ public class XmlParser {
 	private XmlAttributesMap meta;
 	private final ElementsStream.TokensStream tokens;
 	
-	public static XmlDocument parse(InputStream is) {
-		try {
-			String string = new String(is.readAllBytes());
-			return parse(string);
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
+	public static XmlDocument parse(InputStream is) throws IOException {
+		String string = new String(is.readAllBytes());
+		return parse(string);
 	}
 	
 	public static XmlDocument parse(String string) {

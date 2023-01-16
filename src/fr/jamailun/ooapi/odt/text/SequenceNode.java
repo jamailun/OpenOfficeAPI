@@ -2,6 +2,7 @@ package fr.jamailun.ooapi.odt.text;
 
 import fr.jamailun.ooapi.odt.ODNode;
 import fr.jamailun.ooapi.odt.TextContainer;
+import fr.jamailun.ooapi.utils.Indent;
 import fr.jamailun.ooapi.xml.XmlNode;
 
 /**
@@ -78,7 +79,9 @@ public class SequenceNode extends ODNode implements TextContainer {
 	}
 	
 	@Override
-	public String toXml(String endl, String indent) {
-		return toXmlPrefix() + ">" + text + endl + indent + "</"+getNodeName()+">";
+	public String toXml(Indent indent, String endl) {
+		return indent + toXmlPrefix() + ">" + endl
+				+ indent.add() + text + endl
+				+ indent.remove() + "</"+getNodeName()+">" + endl;
 	}
 }

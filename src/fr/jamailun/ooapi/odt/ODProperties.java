@@ -35,9 +35,10 @@ public class ODProperties {
 		StringJoiner sj = new StringJoiner(" ");
 		for(Map.Entry<String, String> entry : values.entrySet()) {
 			if(entry.getValue() != null)
-				sj.add(entry.getKey()).add("=\"").add(StringUtils.escape(entry.getValue())).add("\"");
+				sj.add(entry.getKey() + "=\"" + StringUtils.escape(entry.getValue()) + "\"");
 		}
-		return sj.toString();
+		String str = sj.toString();
+		return (str.isEmpty() ? "" : " " + str);
 	}
 	
 	@Override

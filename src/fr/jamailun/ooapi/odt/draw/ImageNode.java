@@ -1,6 +1,7 @@
 package fr.jamailun.ooapi.odt.draw;
 
 import fr.jamailun.ooapi.odt.ODNode;
+import fr.jamailun.ooapi.utils.Indent;
 import fr.jamailun.ooapi.xml.XmlNode;
 
 public class ImageNode extends ODNode {
@@ -68,7 +69,7 @@ public class ImageNode extends ODNode {
 	}
 	
 	@Override
-	public String toXml(String endl, String indent) {
-		return "<" + XML_NAME + " " + properties.toXml() + "/>";
+	public String toXml(Indent indent, String endl) {
+		return indent + "<" + XML_NAME + properties.toXml() + "/>" + endl;
 	}
 }

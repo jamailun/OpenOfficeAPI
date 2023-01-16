@@ -1,6 +1,7 @@
 package fr.jamailun.ooapi.odt;
 
 import fr.jamailun.jamlogger.JamLogger;
+import fr.jamailun.ooapi.utils.Indent;
 import fr.jamailun.ooapi.utils.XmlHelper;
 import fr.jamailun.ooapi.xml.MalformedXmlException;
 import fr.jamailun.ooapi.xml.XmlNode;
@@ -74,13 +75,13 @@ public abstract class ODNode {
 	 * @return the valid XML string for this node.
 	 */
 	public String toXml(boolean nicePrint) {
-		return nicePrint ? toXml("", "") : toXml("\n", "\n");
+		return nicePrint ? toXml(new Indent("\t"), "\n") : toXml(new Indent(), "");
 	}
 	
-	public abstract String toXml(String endl, String indent);
+	public abstract String toXml(Indent indent, String endl);
 	
 	protected String toXmlPrefix() {
-		return "<" + getNodeName() + " " + properties.toXml();
+		return "<" + getNodeName() + properties.toXml();
 	}
 	
 	/**

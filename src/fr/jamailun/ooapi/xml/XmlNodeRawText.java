@@ -1,9 +1,17 @@
 package fr.jamailun.ooapi.xml;
 
 public class XmlNodeRawText extends XmlNode {
+	
+	private final String textContent;
+	
 	public XmlNodeRawText(String text) {
 		super("", new XmlAttributesMap());
-		setTextContent(text);
+		this.textContent = text;
+	}
+	
+	@Override
+	public String getTextContent() {
+		return textContent;
 	}
 	
 	@Override

@@ -31,12 +31,16 @@ public class OpenDocument {
 		if(contentBody == null)
 			throw new MalformedXmlException("Could not get <office:body> of content in root: " + content.getRoot());
 		
-		JamLogger.log(contentBody);
+		//JamLogger.log(contentBody);
 		
 		XmlNode text = contentBody.getFirstChild(CoreTextNode.XML_NAME);
 		if(text == null)
 			throw new MalformedXmlException("The BODY of the content doesn't contain any <"+CoreTextNode.XML_NAME+">.");
 		contentNode = new CoreTextNode(text);
+	}
+	
+	public CoreTextNode getContentRoot() {
+		return contentNode;
 	}
 	
 	@Override

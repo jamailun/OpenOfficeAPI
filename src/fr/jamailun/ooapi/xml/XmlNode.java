@@ -8,17 +8,12 @@ public class XmlNode implements Iterable<XmlNode> {
 
 	private final String name;
 	private final XmlAttributesMap attributes;
-	private String textContent;
 	
 	private final List<XmlNode> children = new ArrayList<>();
 	
 	public XmlNode(String name, XmlAttributesMap attributes) {
 		this.name = name;
 		this.attributes = attributes;
-	}
-	
-	void setTextContent(String textContent) {
-		this.textContent = textContent;
 	}
 	
 	void addChild(XmlNode node) {
@@ -55,7 +50,10 @@ public class XmlNode implements Iterable<XmlNode> {
 	}
 	
 	public String getTextContent() {
-		return textContent;
+		StringBuilder sb = new StringBuilder();
+		children.forEach(c -> sb.append(c.getTextContent()));
+		String s = sb.toString();
+		return s.isEmpty() ? null : s;
 	}
 	
 	public XmlAttributesMap getAttributes() {
@@ -67,7 +65,7 @@ public class XmlNode implements Iterable<XmlNode> {
 		sb.append("<").append(name);
 		if(attributes.size() > 0)
 			sb.append(" ").append(attributes);
-		if(textContent != null || !children.isEmpty()) {
+		if(!children.isEmpty()) {
 			sb.append(">").append(endl);
 		} else {
 			sb.append("/>");
@@ -75,8 +73,6 @@ public class XmlNode implements Iterable<XmlNode> {
 		}
 		
 		String indentChildren = indent + "\t";
-		if(textContent != null)
-			sb.append(indentChildren).append(textContent).append(endl);
 		for(XmlNode child : children) {
 			sb.append(child.niceString(indentChildren, endl)).append(endl);
 		}

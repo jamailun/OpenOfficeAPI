@@ -40,8 +40,4 @@ public class CoreTextNode extends ODIterableNode<ODNode> {
 		return XML_NAME;
 	}
 	
-	@Override
-	public String toXml(String endl, String indent) {
-		return toXmlPrefix()+">";
-	}
 }

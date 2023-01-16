@@ -2,6 +2,7 @@ package fr.jamailun.ooapi.odt.text;
 
 import fr.jamailun.ooapi.odt.ODNode;
 import fr.jamailun.ooapi.odt.TextContainer;
+import fr.jamailun.ooapi.utils.Indent;
 import fr.jamailun.ooapi.xml.XmlNode;
 
 /**
@@ -26,7 +27,7 @@ public class TabNode extends ODNode implements TextContainer {
 	}
 	
 	@Override
-	public String toXml(String endl, String indent) {
-		return toXmlPrefix() + "/>";
+	public String toXml(Indent indent, String endl) {
+		return indent + toXmlPrefix() + "/>" + endl;
 	}
 }

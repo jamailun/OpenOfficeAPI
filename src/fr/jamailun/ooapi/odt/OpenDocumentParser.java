@@ -1,6 +1,7 @@
 package fr.jamailun.ooapi.odt;
 
 import fr.jamailun.jamlogger.JamLogger;
+import fr.jamailun.ooapi.utils.StringUtils;
 import fr.jamailun.ooapi.xml.XmlDocument;
 import fr.jamailun.ooapi.xml.XmlParser;
 
@@ -37,17 +38,18 @@ public class OpenDocumentParser {
 			}
 			else if(LOOKED_FILES.contains(entry.getName())) {
 				JamLogger.log("Parsing entry '" + entry.getName()+"'.");
-				XmlDocument d = XmlParser.parse(zipFile.getInputStream(entry));
+				XmlDocument document = XmlParser.parse(zipFile.getInputStream(entry));
 				switch (entry.getName()) {
-					case "content.xml" -> content = d;
-					case "styles.xml" -> styles = d;
-					case "meta.xml" -> meta = d;
+					case "content.xml" -> content = document;
+					case "styles.xml" -> styles = document;
+					case "meta.xml" -> meta = document;
 				}
 			}
 		}
 		
 		if(content == null || styles == null || meta == null) {
-			throw new IllegalArgumentException("Incorrect open document file. Some inner-files are missing.");
+			throw new IllegalArgumentException("Incorrect open document file. Some inner-files are missing: "
+					+ StringUtils.toStringWhenNull(content, "content", styles, "styles", meta, "meta"));
 		}
 		if(!typeChecked)
 			throw new IllegalArgumentException("Incorrect open document file. Mimetype is missing.");

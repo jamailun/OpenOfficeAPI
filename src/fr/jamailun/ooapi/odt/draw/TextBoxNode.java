@@ -1,6 +1,5 @@
 package fr.jamailun.ooapi.odt.draw;
 
-import fr.jamailun.jamlogger.JamLogger;
 import fr.jamailun.ooapi.odt.LibrairyODT;
 import fr.jamailun.ooapi.odt.ODIterableNode;
 import fr.jamailun.ooapi.odt.ODNode;

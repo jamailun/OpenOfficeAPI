@@ -1,6 +1,7 @@
 package fr.jamailun.ooapi.odt;
 
 import fr.jamailun.jamlogger.JamLogger;
+import fr.jamailun.ooapi.utils.Indent;
 import fr.jamailun.ooapi.xml.XmlNode;
 
 import java.util.ArrayList;
@@ -29,17 +30,23 @@ public abstract class ODIterableNode<T extends ODNode> extends ODNode implements
 		}
 	}
 	
-	protected String toXmlChildren(String endl, String indent) {
+	protected String toXmlChildren(String endl, Indent indent) {
 		StringBuilder sb = new StringBuilder();
-		forEach(c -> sb.append(indent).append(c).append(endl));
-		return sb + endl;
+		indent.add();
+		forEach(child -> sb.append(child.toXml(indent, endl)));
+		indent.remove();
+		return sb.toString();
 	}
 	
 	@Override
-	public String toXml(String endl, String indent) {
-		return toXmlPrefix() + ">" + endl
-				+ indent + toXmlChildren(endl, indent)
-				+ "</"+getNodeName()+">";
+	public String toXml(Indent indent, String endl) {
+		if(hasChildren()) {
+			return indent + toXmlPrefix() + ">" + endl
+					+ toXmlChildren(endl, indent)
+					+ indent + "</"+getNodeName()+">" + endl;
+		} else {
+			return indent + toXmlPrefix() + "/>" + endl;
+		}
 	}
 	
 	@Override
@@ -49,5 +56,13 @@ public abstract class ODIterableNode<T extends ODNode> extends ODNode implements
 	
 	public List<T> getChildren() {
 		return Collections.unmodifiableList(children);
+	}
+	
+	public int getChildrenCount() {
+		return children.size();
+	}
+	
+	public boolean hasChildren() {
+		return ! children.isEmpty();
 	}
 }
