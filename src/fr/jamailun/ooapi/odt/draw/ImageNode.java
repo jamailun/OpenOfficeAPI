@@ -1,66 +1,47 @@
 package fr.jamailun.ooapi.odt.draw;
 
+import fr.jamailun.ooapi.common.DrawConstants;
+import fr.jamailun.ooapi.common.Hrefable;
+import fr.jamailun.ooapi.common.Mimetype;
+import fr.jamailun.ooapi.common.XLinkConstants;
 import fr.jamailun.ooapi.odt.ODNode;
+import fr.jamailun.ooapi.odt.OpenDocument;
 import fr.jamailun.ooapi.utils.Indent;
 import fr.jamailun.ooapi.xml.XmlNode;
 
-public class ImageNode extends ODNode {
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+
+public class ImageNode extends ODNode implements Hrefable {
 	
 	public final static String XML_NAME = "draw:image";
 	
-	public final static String IMAGE_TYPE = "xlink:type";
-	public final static String MIME_TYPE = "draw:mime-type";
-	public final static String SHOW_MODE = "xlink:show";
-	public final static String ACTIVATE = "xlink:actuate";
-	public final static String HREF = "xlink:href";
-	
 	public ImageNode(XmlNode node) {
 		super(node);
-		properties.from(IMAGE_TYPE, node.getAttributes());
-		properties.from(MIME_TYPE, node.getAttributes());
-		properties.from(SHOW_MODE, node.getAttributes());
-		properties.from(ACTIVATE, node.getAttributes());
-		properties.from(HREF, node.getAttributes());
 	}
 	
 	public String getImageType() {
-		return properties.get(IMAGE_TYPE);
+		return properties.get(XLinkConstants.TYPE);
 	}
-	
 	public void setImageType(String imageType) {
-		properties.set(IMAGE_TYPE, imageType);
+		properties.set(XLinkConstants.TYPE, imageType);
 	}
-	
 	public String getMimetype() {
-		return properties.get(MIME_TYPE);
+		return properties.get(DrawConstants.MIMETYPE);
 	}
-	
 	public void setMimetype(String mimetype) {
-		properties.set(MIME_TYPE, mimetype);
+		properties.set(DrawConstants.MIMETYPE, mimetype);
 	}
 	
-	public String getShowMode() {
-		return properties.get(SHOW_MODE);
-	}
-	
-	public void setShowMode(String showMode) {
-		properties.set(SHOW_MODE, showMode);
-	}
-	
-	public String getActivate() {
-		return properties.get(ACTIVATE);
-	}
-	
-	public void setActivate(String activate) {
-		properties.set(ACTIVATE, activate);
-	}
-	
+	@Override
 	public String getHref() {
-		return properties.get(HREF);
+		return properties.get(XLinkConstants.HREF);
 	}
-	
 	public void setHref(String href) {
-		properties.set(HREF, href);
+		properties.set(XLinkConstants.HREF, href);
 	}
 	
 	@Override
@@ -71,5 +52,23 @@ public class ImageNode extends ODNode {
 	@Override
 	public String toXml(Indent indent, String endl) {
 		return indent + "<" + XML_NAME + properties.toXml() + "/>" + endl;
+	}
+	
+	public void exportImage(OpenDocument document, String output) throws IOException {
+		ByteArrayInputStream data = document.getHref(this);
+		BufferedImage bImage2 = ImageIO.read(data);
+		String extension;
+		if(output.contains(".")) {
+			String[] tokens = output.split("\\.");
+			extension = tokens[tokens.length - 1];
+		} else {
+			extension = Mimetype.findExtension(getMimetype());
+		}
+		ImageIO.write(bImage2, extension, new File(output + "." + extension) );
+	}
+	
+	@Override
+	public String toString() {
+		return "ImageNode{href="+getHref()+"}";
 	}
 }

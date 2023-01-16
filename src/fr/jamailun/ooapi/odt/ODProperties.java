@@ -1,6 +1,7 @@
 package fr.jamailun.ooapi.odt;
 
 import fr.jamailun.ooapi.utils.StringUtils;
+import fr.jamailun.ooapi.xml.XmlAttribute;
 import fr.jamailun.ooapi.xml.XmlAttributesMap;
 import fr.jamailun.ooapi.xml.XmlNode;
 
@@ -11,6 +12,12 @@ import java.util.StringJoiner;
 public class ODProperties {
 	
 	private final Map<String, String> values = new HashMap<>();
+	
+	public void from(XmlNode node) {
+		for(XmlAttribute attribute : node.getAttributes()) {
+			values.put(attribute.name(), attribute.value());
+		}
+	}
 	
 	public void from(String name, XmlNode node) {
 		from(name, node.getAttributes());

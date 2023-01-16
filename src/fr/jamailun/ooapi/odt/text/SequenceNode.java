@@ -1,5 +1,7 @@
 package fr.jamailun.ooapi.odt.text;
 
+import fr.jamailun.ooapi.common.StyleConstants;
+import fr.jamailun.ooapi.common.TextConstants;
 import fr.jamailun.ooapi.odt.ODNode;
 import fr.jamailun.ooapi.odt.TextContainer;
 import fr.jamailun.ooapi.utils.Indent;
@@ -16,52 +18,36 @@ public class SequenceNode extends ODNode implements TextContainer {
 	
 	public static final String XML_NAME = "text:sequence";
 	
-	public static final String XML_ATTR_NAME = "text:name";
-	public static final String XML_ATTR_FORMULA = "text:formula";
-	public static final String XML_ATTR_NUMFORMAT = "style:num-format";
-	public static final String XML_ATTR_REFNAME = "text:ref-name";
-	
 	private String text;
 	
 	public SequenceNode(XmlNode node) {
 		super(node);
 		text = node.getTextContent();
-		properties.from(XML_ATTR_NAME, node);
-		properties.from(XML_ATTR_FORMULA, node);
-		properties.from(XML_ATTR_NUMFORMAT, node);
-		properties.from(XML_ATTR_REFNAME, node);
 	}
 	
 	public String getSequenceName() {
-		return properties.get(XML_ATTR_NAME);
+		return properties.get(TextConstants.TEXT_NAME);
 	}
-	
 	public String getFormula() {
-		return properties.get(XML_ATTR_FORMULA);
+		return properties.get(TextConstants.FORMULA);
 	}
-	
 	public String getNumFormat() {
-		return properties.get(XML_ATTR_NUMFORMAT);
+		return properties.get(StyleConstants.NUM_FORMAT);
 	}
-	
 	public String getRefName() {
-		return properties.get(XML_ATTR_REFNAME);
+		return properties.get(TextConstants.REF_NAME);
 	}
-	
 	public void setSequenceName(String sequenceName) {
-		properties.set(XML_ATTR_NAME, sequenceName);
+		properties.set(TextConstants.TEXT_NAME, sequenceName);
 	}
-	
 	public void setFormula(String formula) {
-		properties.set(XML_ATTR_FORMULA, formula);
+		properties.set(TextConstants.FORMULA, formula);
 	}
-	
 	public void setNumFormat(String numFormat) {
-		properties.set(XML_ATTR_NUMFORMAT, numFormat);
+		properties.set(StyleConstants.NUM_FORMAT, numFormat);
 	}
-	
 	public void setRefName(String refName) {
-		properties.set(XML_ATTR_REFNAME, refName);
+		properties.set(TextConstants.REF_NAME, refName);
 	}
 	
 	public void setText(String text) {

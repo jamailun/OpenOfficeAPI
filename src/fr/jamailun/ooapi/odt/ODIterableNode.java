@@ -54,15 +54,9 @@ public abstract class ODIterableNode<T extends ODNode> extends ODNode implements
 		return children.listIterator();
 	}
 	
+	@Override
 	public List<T> getChildren() {
 		return Collections.unmodifiableList(children);
 	}
 	
-	public int getChildrenCount() {
-		return children.size();
-	}
-	
-	public boolean hasChildren() {
-		return ! children.isEmpty();
-	}
 }

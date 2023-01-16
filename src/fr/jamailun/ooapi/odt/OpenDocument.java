@@ -1,11 +1,16 @@
 package fr.jamailun.ooapi.odt;
 
-import fr.jamailun.jamlogger.JamLogger;
+import fr.jamailun.ooapi.common.Hrefable;
 import fr.jamailun.ooapi.odt.text.CoreTextNode;
 import fr.jamailun.ooapi.xml.MalformedXmlException;
 import fr.jamailun.ooapi.xml.XmlDocument;
 import fr.jamailun.ooapi.xml.XmlNode;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 public class OpenDocument {
@@ -37,6 +42,29 @@ public class OpenDocument {
 		if(text == null)
 			throw new MalformedXmlException("The BODY of the content doesn't contain any <"+CoreTextNode.XML_NAME+">.");
 		contentNode = new CoreTextNode(text);
+	}
+	
+	public <T extends ODNode> List<T> getAllOfType(Class<T> clazz) {
+		return contentNode.collectAllChildren(n -> clazz.isAssignableFrom(n.getClass()));
+	}
+	public List<? extends ODNode> getAllOfType(String xmlType) {
+		return contentNode.collectAllChildren(n -> n.getNodeName().equals(xmlType));
+	}
+	
+	public ByteArrayInputStream getHref(Hrefable node) throws IOException {
+		return getHref(node.getHref());
+	}
+	
+	public ByteArrayInputStream getHref(String href) throws IOException {
+		Enumeration<? extends ZipEntry> entries = zipFile.entries();
+		while(entries.hasMoreElements()) {
+			ZipEntry entry = entries.nextElement();
+			String name = entry.getName();
+			if(name.equals(href)) {
+				return new ByteArrayInputStream(zipFile.getInputStream(entry).readAllBytes());
+			}
+		}
+		throw new IllegalArgumentException("Could not find the href '"+href+"'. Is the archive valid ?");
 	}
 	
 	public CoreTextNode getContentRoot() {
