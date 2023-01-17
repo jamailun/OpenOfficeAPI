@@ -9,6 +9,7 @@ import fr.jamailun.ooapi.xml.XmlNode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The only child of the [office:body] node.
@@ -39,6 +40,17 @@ public class CoreTextNode extends ODIterableNode<ODNode> {
 			sb.append(tc.getText());
 		}
 		return sb.toString();
+	}
+	
+	public void replaceAll(Map<String, String> replacements) {
+		for(String k : replacements.keySet()) {
+			int count = 0;
+			for(TextContainer tc : collectAllTextContainers()) {
+				count += tc.countOccurences(k);
+			}
+			JamLogger.info("count of ("+k+") = " + count);
+			replaceAll(k, replacements.get(k));
+		}
 	}
 	
 	public void replaceAll(String source, String target) {

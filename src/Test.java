@@ -3,24 +3,28 @@ import fr.jamailun.ooapi.odt.OpenDocument;
 import fr.jamailun.ooapi.odt.OpenDocumentParser;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.StringJoiner;
 import java.util.zip.ZipFile;
 
 public class Test {
 	public static void main(String[] args) throws IOException {
-		OpenDocument doc = OpenDocumentParser.parse(new ZipFile("F:/tests/oui.odt"));
+		OpenDocument doc = OpenDocumentParser.parse(new ZipFile("F:/tests/test2.odt"));
 		System.out.println(doc.getContentRoot().toXml(true));
 		
 		JamLogger.info(doc.getContentRoot());
-		JamLogger.log(doc.getContentRoot().getRawText());
-		doc.getContentRoot().replaceAll("patates", "carottes");
-		JamLogger.log(doc.getContentRoot().getRawText());
 		
-		JamLogger.log(doc.getContentRoot().getNodeReference().niceString(false));
+		Map<String, String> replacements = Map.of(
+				"{recipient}", "Duponltdh",
+				"{state}", "fou, voir \"crazy\" comme disent les djeuns",
+				"{figure}", "PTITE IMAGE"
+		);
+		
+		JamLogger.log(doc.getContentRoot().getRawText());
+		doc.getContentRoot().replaceAll(replacements);
+		JamLogger.log(doc.getContentRoot().getRawText());
 		
 		doc.getContentRoot().applyToRealXml();
-		JamLogger.info(doc.getContentRoot().getNodeReference().niceString(false));
-		
 		doc.recreateFile("F:/tests/non.odt");
 		
 		/*JamLogger.info("Images ? " + coll(doc.getAllOfType(ImageNode.class)));

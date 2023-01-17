@@ -13,7 +13,7 @@ public interface TextContainer {
 	}
 	
 	default void replace(String toFind, String replaceWith) {
-		setText(getText().replaceAll(toFind, replaceWith));
+		setText(getText().replace(toFind, replaceWith));
 	}
 	
 }
