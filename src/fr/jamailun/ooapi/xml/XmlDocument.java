@@ -25,7 +25,7 @@ public class XmlDocument {
 	public String toString() {
 		return "XmlDocument{" +
 				"meta=" + meta +
-				", root=\n" + root.niceString("\t", "\n") +
+				", root=\n" + root.niceString(true) +
 				"\n}";
 	}
 }

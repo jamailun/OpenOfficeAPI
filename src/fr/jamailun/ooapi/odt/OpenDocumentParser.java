@@ -15,7 +15,7 @@ public class OpenDocumentParser {
 	private OpenDocumentParser() {}
 	
 	private static final String MIMETYPE = "mimetype";
-	private static final List<String> LOOKED_FILES = List.of("content.xml", "styles.xml", "meta.xml");
+	private static final List<String> LOOKED_FILES = List.of(OpenDocument.ENTRY_CONTENT, OpenDocument.ENTRY_STYLES, OpenDocument.ENTRY_META);
 	
 	public static OpenDocument parse(ZipFile zipFile) throws IOException {
 		assert zipFile != null : "ZipFile cannot be null.";
@@ -40,16 +40,21 @@ public class OpenDocumentParser {
 				JamLogger.log("Parsing entry '" + entry.getName()+"'.");
 				XmlDocument document = XmlParser.parse(zipFile.getInputStream(entry));
 				switch (entry.getName()) {
-					case "content.xml" -> content = document;
-					case "styles.xml" -> styles = document;
-					case "meta.xml" -> meta = document;
+					case OpenDocument.ENTRY_CONTENT -> content = document;
+					case OpenDocument.ENTRY_STYLES -> styles = document;
+					case OpenDocument.ENTRY_META -> meta = document;
 				}
 			}
 		}
 		
 		if(content == null || styles == null || meta == null) {
 			throw new IllegalArgumentException("Incorrect open document file. Some inner-files are missing: "
-					+ StringUtils.toStringWhenNull(content, "content", styles, "styles", meta, "meta"));
+					+ StringUtils.toStringWhenNull(
+							content, OpenDocument.ENTRY_CONTENT,
+							styles, OpenDocument.ENTRY_STYLES,
+							meta, OpenDocument.ENTRY_META
+					)
+			);
 		}
 		if(!typeChecked)
 			throw new IllegalArgumentException("Incorrect open document file. Mimetype is missing.");

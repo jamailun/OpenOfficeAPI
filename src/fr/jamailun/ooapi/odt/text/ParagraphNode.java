@@ -36,9 +36,15 @@ public class ParagraphNode extends ODIterableNode<ODNode> implements TextContain
 	
 	@Override
 	public String getText() {
-		StringBuilder sb = new StringBuilder();
-		getTextualElements().forEach(s -> sb.append(s.getText()));
-		return sb.toString();
+		return "";
+		//StringBuilder sb = new StringBuilder();
+		//getTextualElements().forEach(s -> sb.append(s.getText()));
+		//return sb.toString();
+	}
+	
+	@Override
+	public void setText(String value) {
+		//TODO settext of paragraph
 	}
 	
 	@Override

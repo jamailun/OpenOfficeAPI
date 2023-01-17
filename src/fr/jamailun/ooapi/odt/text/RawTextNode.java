@@ -11,14 +11,21 @@ import fr.jamailun.ooapi.xml.XmlNode;
 public class RawTextNode extends ODNode implements TextContainer {
 	
 	public static final String XML_NAME = "";
+	private String text;
 	
 	public RawTextNode(XmlNode node) {
 		super(node);
+		text = node.getTextContent();
 	}
 	
 	@Override
 	public String getText() {
-		return getNodeReference().getTextContent();
+		return text;
+	}
+	
+	@Override
+	public void setText(String text) {
+		this.text = text == null ? "" : text;
 	}
 	
 	@Override

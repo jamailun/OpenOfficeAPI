@@ -43,10 +43,10 @@ public final class XmlAttributesMap implements Iterable<XmlAttribute> {
 	
 	@Override
 	public String toString() {
-		StringJoiner sj = new StringJoiner("; ");
+		StringJoiner sj = new StringJoiner(" ");
 		for(XmlAttribute attribute : this) {
 			sj.add(attribute.toString());
 		}
-		return "{" + sj + "}";
+		return sj.toString();
 	}
 }

@@ -21,6 +21,9 @@ public class TextBoxNode extends ODIterableNode<ODNode> implements TextContainer
 	}
 	
 	@Override
+	public void setText(String value) {}
+	
+	@Override
 	public String getNodeName() {
 		return XML_NAME;
 	}

@@ -125,9 +125,16 @@ public abstract class ODNode {
 		return getClass().getSimpleName() + "{id="+getId()+"}";
 	}
 	
-	
 	public List<? extends ODNode> getChildren() {
 		return Collections.emptyList();
+	}
+	
+	public <T> List<T> collectAllInterfaces(Class<T> clazz) {
+		return collectAllChildren(c -> clazz.isAssignableFrom(c.getClass())).stream().map(n -> clazz.cast(n)).toList();
+	}
+	
+	public <T extends ODNode & TextContainer> List<T> collectAllTextContainers() {
+		return collectAllChildren(c -> TextContainer.class.isAssignableFrom(c.getClass()));
 	}
 	
 	public <T extends ODNode> List<T> collectAllChildren() {

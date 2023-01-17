@@ -1,5 +1,7 @@
 package fr.jamailun.ooapi.xml;
 
+import fr.jamailun.ooapi.utils.Indent;
+
 public class XmlNodeRawText extends XmlNode {
 	
 	private final String textContent;
@@ -15,7 +17,7 @@ public class XmlNodeRawText extends XmlNode {
 	}
 	
 	@Override
-	public String niceString(String indent, String endl) {
+	public String niceString(Indent indent, String endl) {
 		return indent + getTextContent() + endl;
 	}
 	

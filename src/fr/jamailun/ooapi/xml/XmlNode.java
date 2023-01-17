@@ -1,19 +1,28 @@
 package fr.jamailun.ooapi.xml;
 
+import fr.jamailun.ooapi.utils.Indent;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 public class XmlNode implements Iterable<XmlNode> {
 
-	private final String name;
-	private final XmlAttributesMap attributes;
-	
+	private String name;
+	private XmlAttributesMap attributes;
 	private final List<XmlNode> children = new ArrayList<>();
 	
 	public XmlNode(String name, XmlAttributesMap attributes) {
 		this.name = name;
 		this.attributes = attributes;
+	}
+	
+	public void forceRawWriting(String xml) {
+		XmlDocument doc = XmlParser.parse(xml);
+		name = doc.getRoot().getName();
+		attributes = doc.getRoot().getAttributes();
+		children.clear();
+		children.addAll(doc.getRoot().getChildren());
 	}
 	
 	void addChild(XmlNode node) {
@@ -60,8 +69,12 @@ public class XmlNode implements Iterable<XmlNode> {
 		return attributes;
 	}
 	
-	public String niceString(String indent, String endl) {
-		StringBuilder sb = new StringBuilder(indent);
+	public String niceString(boolean n) {
+		return niceString(new Indent(n ? "\t" : ""), n ? "\n" : "");
+	}
+	
+	public String niceString(Indent indent, String endl) {
+		StringBuilder sb = new StringBuilder(indent.toString());
 		sb.append("<").append(name);
 		if(attributes.size() > 0)
 			sb.append(" ").append(attributes);
@@ -72,16 +85,17 @@ public class XmlNode implements Iterable<XmlNode> {
 			return sb.toString();
 		}
 		
-		String indentChildren = indent + "\t";
+		indent.add();
 		for(XmlNode child : children) {
-			sb.append(child.niceString(indentChildren, endl)).append(endl);
+			sb.append(child.niceString(indent, endl)).append(endl);
 		}
+		indent.remove();
 		return sb.append(indent).append("</").append(name).append(">").toString();
 	}
 	
 	@Override
 	public String toString() {
-		return niceString("", "\n");
+		return niceString(true);
 	}
 	
 	@Override

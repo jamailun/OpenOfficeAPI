@@ -7,15 +7,23 @@ import fr.jamailun.ooapi.xml.XmlDocument;
 import fr.jamailun.ooapi.xml.XmlNode;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+import java.util.zip.ZipOutputStream;
 
 public class OpenDocument {
 	
 	public static final String MIMETYPE = "application/vnd.oasis.opendocument.text";
+	public static final String ENTRY_CONTENT = "content.xml";
+	public static final String ENTRY_STYLES = "styles.xml";
+	public static final String ENTRY_META = "meta.xml";
 	
 	private final ZipFile zipFile;
 	
@@ -69,6 +77,35 @@ public class OpenDocument {
 	
 	public CoreTextNode getContentRoot() {
 		return contentNode;
+	}
+	
+	private byte[] getBytes(ZipEntry zipEntry) throws IOException {
+		return switch (zipEntry.getName()) {
+			case ENTRY_CONTENT -> content.getRoot().niceString(false).getBytes(StandardCharsets.UTF_8);
+			case ENTRY_STYLES -> styles.getRoot().niceString(false).getBytes(StandardCharsets.UTF_8);
+			case ENTRY_META -> meta.getRoot().niceString(false).getBytes(StandardCharsets.UTF_8);
+			default -> zipFile.getInputStream(zipEntry).readAllBytes();
+		};
+	}
+	
+	public File recreateFile(String path) throws IOException {
+		File outputFile = new File(path);
+		if(!outputFile.exists())
+			outputFile.createNewFile();
+		Enumeration<? extends ZipEntry> currentEntries = zipFile.entries();
+		try(ZipOutputStream output = new ZipOutputStream(new FileOutputStream(outputFile))) {
+			while(currentEntries.hasMoreElements()) {
+				ZipEntry oldEntry = currentEntries.nextElement();
+				ZipEntry entry = new ZipEntry(oldEntry.getName());
+				output.putNextEntry(entry);
+				
+				byte[] data = getBytes(oldEntry);
+				output.write(data, 0, data.length);
+				
+				output.closeEntry();
+			}
+		}
+		return outputFile;
 	}
 	
 	@Override

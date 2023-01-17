@@ -101,7 +101,7 @@ public class XmlParser {
 			// LABEL
 			String name = tokens.readLabel("getting name of attribute in " + parent);
 			// =
-			tokens.removeOrThrow(XmlTokenType.EQUAL, "reading attributes of "+parent);
+			tokens.removeOrThrow(XmlTokenType.EQUAL, "reading attributes of "+parent + " (attr="+name+")");
 			// VALUE
 			String value = tokens.readString("getting value of "+parent);
 			

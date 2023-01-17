@@ -3,6 +3,7 @@ package fr.jamailun.ooapi.odt.text;
 import fr.jamailun.ooapi.odt.ODNode;
 import fr.jamailun.ooapi.odt.TextContainer;
 import fr.jamailun.ooapi.utils.Indent;
+import fr.jamailun.ooapi.utils.StringUtils;
 import fr.jamailun.ooapi.xml.XmlNode;
 
 /**
@@ -26,6 +27,11 @@ public class SpanNode extends ODNode implements TextContainer {
 	@Override
 	public String getText() {
 		return text;
+	}
+	
+	@Override
+	public void replace(String toFind, String replaceWith) {
+	
 	}
 	
 	@Override

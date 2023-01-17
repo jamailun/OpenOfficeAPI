@@ -3,6 +3,8 @@ package fr.jamailun.ooapi.odt.text;
 import fr.jamailun.jamlogger.JamLogger;
 import fr.jamailun.ooapi.odt.ODIterableNode;
 import fr.jamailun.ooapi.odt.ODNode;
+import fr.jamailun.ooapi.odt.TextContainer;
+import fr.jamailun.ooapi.utils.Indent;
 import fr.jamailun.ooapi.xml.XmlNode;
 
 import java.util.ArrayList;
@@ -26,13 +28,42 @@ public class CoreTextNode extends ODIterableNode<ODNode> {
 			} else if(child.getName().equals("table:table")) {
 				JamLogger.warning("TODO : tables.");
 			} else {
-				otherXml.add(node);
+				otherXml.add(child);
 			}
+		}
+	}
+	
+	public String getRawText() {
+		StringBuilder sb = new StringBuilder();
+		for(TextContainer tc : collectAllTextContainers()) {
+			sb.append(tc.getText());
+		}
+		return sb.toString();
+	}
+	
+	public void replaceAll(String source, String target) {
+		for(TextContainer tc : collectAllTextContainers()) {
+			tc.replace(source, target);
 		}
 	}
 	
 	public List<XmlNode> getOtherXml() {
 		return otherXml;
+	}
+	public String getOtherXmlToString(boolean nicePrint) {
+		StringBuilder sb = new StringBuilder();
+		for(XmlNode node : getOtherXml()) {
+			sb.append(node.niceString(nicePrint));
+		}
+		return sb.toString();
+	}
+	
+	public void applyToRealXml() {
+		String xml = toXmlPrefix() + ">"
+				+ getOtherXmlToString(false)
+				+ toXmlChildren("", new Indent())
+				+ "</"+getNodeName()+">";
+		getNodeReference().forceRawWriting(xml);
 	}
 	
 	@Override

@@ -20,6 +20,11 @@ public class TabNode extends ODNode implements TextContainer {
 	public String getText() {
 		return "\t";
 	}
+	@Override
+	public void setText(String s) {}
+	
+	@Override
+	public void replace(String toFind, String replaceWith) {}
 	
 	@Override
 	public final String getNodeName() {

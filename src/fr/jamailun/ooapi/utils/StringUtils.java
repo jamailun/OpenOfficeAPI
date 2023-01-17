@@ -23,4 +23,17 @@ public final class StringUtils {
 		}
 		return "[" + sj + "]";
 	}
+	
+	public static int findOccurences(String string, String toFind) {
+		int lastIndex = 0;
+		int count = 0;
+		while(lastIndex != -1){
+			lastIndex = string.indexOf(toFind,lastIndex);
+			if(lastIndex != -1){
+				count ++;
+				lastIndex += toFind.length();
+			}
+		}
+		return count;
+	}
 }
