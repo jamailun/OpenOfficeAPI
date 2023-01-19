@@ -31,7 +31,7 @@ public abstract class ODNode {
 	public ODNode(XmlNode node) {
 		assert node != null : "Cannot have a null node";
 		this.nodeReference = node;
-		if(!node.getName().equals(getNodeName())) {
+		if(getNodeName() != null && !node.getName().equals(getNodeName())) {
 			String error = "ERROR incorrect node name. Expected <"+getNodeName()+">, got <"+node.getName()+">.";
 			JamLogger.error(error);
 			throw new MalformedXmlException(error);

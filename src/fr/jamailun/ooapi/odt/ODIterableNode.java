@@ -25,7 +25,7 @@ public abstract class ODIterableNode<T extends ODNode> extends ODNode implements
 			if(p.test(s)) {
 				children.add(f.apply(s));
 			} else {
-				JamLogger.error("Unknown child '"+s+"' in PARAGRAPH node " + getNodeReference().getName()+".");
+				JamLogger.error("Unknown child '"+s+"' in " + getNodeReference().getName()+".");
 			}
 		}
 	}
@@ -51,7 +51,7 @@ public abstract class ODIterableNode<T extends ODNode> extends ODNode implements
 	
 	@Override
 	public Iterator<T> iterator() {
-		return children.listIterator();
+		return getChildren().listIterator();
 	}
 	
 	@Override

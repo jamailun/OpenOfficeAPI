@@ -9,7 +9,7 @@ import java.util.zip.ZipFile;
 
 public class Test {
 	public static void main(String[] args) throws IOException {
-		OpenDocument doc = OpenDocumentParser.parse(new ZipFile("F:/tests/test2.odt"));
+		OpenDocument doc = OpenDocumentParser.parse(new ZipFile("F:/tests/non.odt"));
 		System.out.println(doc.getContentRoot().toXml(true));
 		
 		JamLogger.info(doc.getContentRoot());
@@ -25,7 +25,7 @@ public class Test {
 		JamLogger.log(doc.getContentRoot().getRawText());
 		
 		doc.getContentRoot().applyToRealXml();
-		doc.recreateFile("F:/tests/non.odt");
+		//doc.recreateFile("F:/tests/non.odt");
 		
 		/*JamLogger.info("Images ? " + coll(doc.getAllOfType(ImageNode.class)));
 		JamLogger.info("Images ? " + coll(doc.getAllOfType(ImageNode.XML_NAME)));

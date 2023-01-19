@@ -4,6 +4,7 @@ import fr.jamailun.jamlogger.JamLogger;
 import fr.jamailun.ooapi.odt.ODIterableNode;
 import fr.jamailun.ooapi.odt.ODNode;
 import fr.jamailun.ooapi.odt.TextContainer;
+import fr.jamailun.ooapi.odt.table.TableNode;
 import fr.jamailun.ooapi.utils.Indent;
 import fr.jamailun.ooapi.xml.XmlNode;
 
@@ -22,12 +23,11 @@ public class CoreTextNode extends ODIterableNode<ODNode> {
 	
 	public CoreTextNode(XmlNode node) {
 		super(node);
-		for(int i = 0; i < node.getChildrenCount(); i++) {
-			XmlNode child = node.getChild(i);
+		for(XmlNode child : node.getChildren()) {
 			if(child.getName().equals(ParagraphNode.XML_NAME)) {
 				children.add(new ParagraphNode(child));
-			} else if(child.getName().equals("table:table")) {
-				JamLogger.warning("TODO : tables.");
+			} else if(child.getName().equals(TableNode.XML_NAME)) {
+				children.add(new TableNode(child));
 			} else {
 				otherXml.add(child);
 			}
