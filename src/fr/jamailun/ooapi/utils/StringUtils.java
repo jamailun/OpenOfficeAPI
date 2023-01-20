@@ -36,4 +36,12 @@ public final class StringUtils {
 		}
 		return count;
 	}
+	
+	public static int toIntOrZero(String s) {
+		try {
+			return Integer.parseInt(s);
+		} catch (NumberFormatException e) {
+			return 0;
+		}
+	}
 }

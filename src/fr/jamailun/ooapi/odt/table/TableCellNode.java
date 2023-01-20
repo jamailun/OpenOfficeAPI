@@ -4,6 +4,7 @@ import fr.jamailun.ooapi.common.TableConstants;
 import fr.jamailun.ooapi.odt.LibrairyODT;
 import fr.jamailun.ooapi.odt.ODIterableNode;
 import fr.jamailun.ooapi.odt.ODNode;
+import fr.jamailun.ooapi.utils.StringUtils;
 import fr.jamailun.ooapi.xml.XmlNode;
 
 public class TableCellNode extends ODIterableNode<ODNode> {
@@ -16,7 +17,7 @@ public class TableCellNode extends ODIterableNode<ODNode> {
 	}
 	
 	public int getColumnSpan() {
-		return Integer.parseInt(properties.get(TableConstants.COLUMN_SPAN));
+		return StringUtils.toIntOrZero(properties.get(TableConstants.COLUMN_SPAN));
 	}
 	
 	public void setColumnSpan(int count) {
@@ -26,6 +27,17 @@ public class TableCellNode extends ODIterableNode<ODNode> {
 	@Override
 	public String getNodeName() {
 		return XML_NAME;
+	}
+	
+	public static class CoveredCellNode extends TableCellNode {
+		public static final String XML_NAME = "table:covered-table-cell";
+		public CoveredCellNode(XmlNode node) {
+			super(node);
+		}
+		@Override
+		public String getNodeName() {
+			return XML_NAME;
+		}
 	}
 	
 }

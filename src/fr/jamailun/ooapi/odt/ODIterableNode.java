@@ -30,14 +30,6 @@ public abstract class ODIterableNode<T extends ODNode> extends ODNode implements
 		}
 	}
 	
-	protected String toXmlChildren(String endl, Indent indent) {
-		StringBuilder sb = new StringBuilder();
-		indent.add();
-		forEach(child -> sb.append(child.toXml(indent, endl)));
-		indent.remove();
-		return sb.toString();
-	}
-	
 	@Override
 	public String toXml(Indent indent, String endl) {
 		if(hasChildren()) {

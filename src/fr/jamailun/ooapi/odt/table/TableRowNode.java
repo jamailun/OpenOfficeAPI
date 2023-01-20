@@ -1,8 +1,6 @@
 package fr.jamailun.ooapi.odt.table;
 
-import fr.jamailun.ooapi.odt.LibrairyODT;
 import fr.jamailun.ooapi.odt.ODIterableNode;
-import fr.jamailun.ooapi.odt.ODNode;
 import fr.jamailun.ooapi.xml.XmlNode;
 
 public class TableRowNode extends ODIterableNode<TableCellNode> {
@@ -12,9 +10,15 @@ public class TableRowNode extends ODIterableNode<TableCellNode> {
 	public TableRowNode(XmlNode node) {
 		super(node);
 		fillFromXmlNode(
-				n -> n.getName().equals(TableCellNode.XML_NAME),
-				TableCellNode::new
+				n -> n.getName().equals(TableCellNode.XML_NAME) || n.getName().equals(TableCellNode.CoveredCellNode.XML_NAME),
+				this::get
 		);
+	}
+	
+	private TableCellNode get(XmlNode node) {
+		if(node.getName().equals(TableCellNode.CoveredCellNode.XML_NAME))
+			return new TableCellNode.CoveredCellNode(node);
+		return new TableCellNode(node);
 	}
 	
 	@Override

@@ -62,17 +62,10 @@ public class CoreTextNode extends ODIterableNode<ODNode> {
 	public List<XmlNode> getOtherXml() {
 		return otherXml;
 	}
-	public String getOtherXmlToString(boolean nicePrint) {
-		StringBuilder sb = new StringBuilder();
-		for(XmlNode node : getOtherXml()) {
-			sb.append(node.niceString(nicePrint));
-		}
-		return sb.toString();
-	}
 	
 	public void applyToRealXml() {
 		String xml = toXmlPrefix() + ">"
-				+ getOtherXmlToString(false)
+				+ XmlNode.toStringCollection(otherXml, false)
 				+ toXmlChildren("", new Indent())
 				+ "</"+getNodeName()+">";
 		getNodeReference().forceRawWriting(xml);

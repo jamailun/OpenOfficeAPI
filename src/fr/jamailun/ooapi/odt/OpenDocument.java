@@ -1,6 +1,7 @@
 package fr.jamailun.ooapi.odt;
 
 import fr.jamailun.ooapi.common.Hrefable;
+import fr.jamailun.ooapi.odt.meta.OpenDocumentMeta;
 import fr.jamailun.ooapi.odt.text.CoreTextNode;
 import fr.jamailun.ooapi.xml.MalformedXmlException;
 import fr.jamailun.ooapi.xml.XmlDocument;
@@ -28,6 +29,7 @@ public class OpenDocument {
 	private final ZipFile zipFile;
 	
 	private final CoreTextNode contentNode;
+	private final OpenDocumentMeta metaNode;
 	
 	private final XmlDocument styles;
 	private final XmlDocument content;
@@ -48,8 +50,13 @@ public class OpenDocument {
 		
 		XmlNode text = contentBody.getFirstChild(CoreTextNode.XML_NAME);
 		if(text == null)
-			throw new MalformedXmlException("The BODY of the content doesn't contain any <"+CoreTextNode.XML_NAME+">.");
+			throw new MalformedXmlException("The body of the CONTENT doesn't contain any <"+CoreTextNode.XML_NAME+">.");
 		contentNode = new CoreTextNode(text);
+		
+		XmlNode metaXml = meta.getRoot().getFirstChild(OpenDocumentMeta.XML_NAME);
+		if(metaXml == null)
+			throw new MalformedXmlException("The body of the META doesn't contain any <"+OpenDocumentMeta.XML_NAME+">.");
+		metaNode = new OpenDocumentMeta(metaXml);
 	}
 	
 	public <T extends ODNode> List<T> getAllOfType(Class<T> clazz) {
@@ -79,6 +86,10 @@ public class OpenDocument {
 		return contentNode;
 	}
 	
+	public OpenDocumentMeta getMeta() {
+		return metaNode;
+	}
+	
 	private byte[] getBytes(ZipEntry zipEntry) throws IOException {
 		return switch (zipEntry.getName()) {
 			case ENTRY_CONTENT -> content.getRoot().niceString(false).getBytes(StandardCharsets.UTF_8);
@@ -89,9 +100,11 @@ public class OpenDocument {
 	}
 	
 	public File recreateFile(String path) throws IOException {
+		// Get IO file
 		File outputFile = new File(path);
 		if(!outputFile.exists())
 			outputFile.createNewFile();
+		// copy all entries
 		Enumeration<? extends ZipEntry> currentEntries = zipFile.entries();
 		try(ZipOutputStream output = new ZipOutputStream(new FileOutputStream(outputFile))) {
 			while(currentEntries.hasMoreElements()) {

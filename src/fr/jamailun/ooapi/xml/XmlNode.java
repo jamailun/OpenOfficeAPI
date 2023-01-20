@@ -3,6 +3,7 @@ package fr.jamailun.ooapi.xml;
 import fr.jamailun.ooapi.utils.Indent;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -11,6 +12,12 @@ public class XmlNode implements Iterable<XmlNode> {
 	private String name;
 	private XmlAttributesMap attributes;
 	private final List<XmlNode> children = new ArrayList<>();
+	
+	public static String toStringCollection(Collection<XmlNode> nodes, boolean nicePrint) {
+		StringBuilder sb = new StringBuilder();
+		nodes.forEach(n -> sb.append(n.niceString(nicePrint)));
+		return sb.toString();
+	}
 	
 	public XmlNode(String name, XmlAttributesMap attributes) {
 		this.name = name;

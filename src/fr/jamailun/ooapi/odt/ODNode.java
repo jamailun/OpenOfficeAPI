@@ -130,7 +130,9 @@ public abstract class ODNode {
 	}
 	
 	public <T> List<T> collectAllInterfaces(Class<T> clazz) {
-		return collectAllChildren(c -> clazz.isAssignableFrom(c.getClass())).stream().map(n -> clazz.cast(n)).toList();
+		return collectAllChildren(c -> clazz.isAssignableFrom(c.getClass()))
+				.stream().map(n -> clazz.cast(n))
+				.toList();
 	}
 	
 	public <T extends ODNode & TextContainer> List<T> collectAllTextContainers() {
@@ -162,6 +164,14 @@ public abstract class ODNode {
 	
 	public boolean hasChildren() {
 		return ! getChildren().isEmpty();
+	}
+	
+	protected String toXmlChildren(String endl, Indent indent) {
+		StringBuilder sb = new StringBuilder();
+		indent.add();
+		getChildren().forEach(child -> sb.append(child.toXml(indent, endl)));
+		indent.remove();
+		return sb.toString();
 	}
 	
 }

@@ -37,6 +37,10 @@ public class Indent {
 		return toString();
 	}
 	
+	public String debug() {
+		return "Indent{"+count+"x'"+StringUtils.escape(pattern)+"'}";
+	}
+	
 	@Override
 	public String toString() {
 		return currentValue;
