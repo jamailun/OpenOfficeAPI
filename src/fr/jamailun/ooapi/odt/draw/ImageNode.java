@@ -43,6 +43,10 @@ public class ImageNode extends ODNode implements Hrefable {
 	public void setHref(String href) {
 		properties.set(XLinkConstants.HREF, href);
 	}
+	public String getImageName() {
+		String[] tokens = getHref().split("/");
+		return tokens[tokens.length - 1];
+	}
 	
 	@Override
 	public String getNodeName() {

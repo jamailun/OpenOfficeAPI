@@ -8,4 +8,6 @@ public class SvgConstants {
 	public static final String X = "svg:x";
 	public static final String Y = "svg:y";
 	
+	public static final String FONT_FAMILY = "svg:font-family";
+	
 }

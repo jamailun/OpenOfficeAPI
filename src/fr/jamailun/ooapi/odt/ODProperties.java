@@ -31,6 +31,10 @@ public class ODProperties {
 		return values.get(name);
 	}
 	
+	public boolean has(String name) {
+		return values.containsKey(name);
+	}
+	
 	public void set(String name, String value) {
 		if(value == null || value.isEmpty() || value.isBlank())
 			values.remove(name);

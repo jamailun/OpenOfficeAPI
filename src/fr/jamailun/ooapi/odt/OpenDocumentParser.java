@@ -5,6 +5,7 @@ import fr.jamailun.ooapi.utils.StringUtils;
 import fr.jamailun.ooapi.xml.XmlDocument;
 import fr.jamailun.ooapi.xml.XmlParser;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.List;
@@ -16,6 +17,17 @@ public class OpenDocumentParser {
 	
 	private static final String MIMETYPE = "mimetype";
 	private static final List<String> LOOKED_FILES = List.of(OpenDocument.ENTRY_CONTENT, OpenDocument.ENTRY_STYLES, OpenDocument.ENTRY_META);
+	
+	public static OpenDocument parse(String filePath) throws IOException {
+		assert filePath != null : "Cannot parse a null path.";
+		return parse(new File(filePath));
+	}
+	
+	public static OpenDocument parse(File file) throws IOException {
+		assert file != null : "Cannot parse a null file.";
+		assert file.exists() : "The file must exist in order to be parsed.";
+		return parse(new ZipFile(file));
+	}
 	
 	public static OpenDocument parse(ZipFile zipFile) throws IOException {
 		assert zipFile != null : "ZipFile cannot be null.";

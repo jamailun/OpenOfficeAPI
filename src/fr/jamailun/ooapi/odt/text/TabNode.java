@@ -1,14 +1,13 @@
 package fr.jamailun.ooapi.odt.text;
 
-import fr.jamailun.ooapi.odt.ODNode;
+import fr.jamailun.ooapi.odt.MonoNode;
 import fr.jamailun.ooapi.odt.TextContainer;
-import fr.jamailun.ooapi.utils.Indent;
 import fr.jamailun.ooapi.xml.XmlNode;
 
 /**
  * For [text:tab] nodes.
  */
-public class TabNode extends ODNode implements TextContainer {
+public class TabNode extends MonoNode implements TextContainer {
 	
 	public static final String XML_NAME = "text:tab";
 	
@@ -31,8 +30,4 @@ public class TabNode extends ODNode implements TextContainer {
 		return XML_NAME;
 	}
 	
-	@Override
-	public String toXml(Indent indent, String endl) {
-		return indent + toXmlPrefix() + "/>" + endl;
-	}
 }

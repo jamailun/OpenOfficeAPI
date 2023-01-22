@@ -99,6 +99,11 @@ public class OpenDocument {
 		};
 	}
 	
+	public void applyAllChanges() {
+		contentNode.applyToRealXml();
+		metaNode.applyToRealXml();
+	}
+	
 	public File recreateFile(String path) throws IOException {
 		// Get IO file
 		File outputFile = new File(path);

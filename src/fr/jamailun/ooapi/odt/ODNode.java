@@ -158,6 +158,10 @@ public abstract class ODNode {
 		return all;
 	}
 	
+	public String getPropertie(String name) {
+		return properties.get(name);
+	}
+	
 	public int getChildrenCount() {
 		return getChildren().size();
 	}
