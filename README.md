@@ -17,22 +17,22 @@ List of functionalities:
 ````java
 public static class Demo { 
     public static void main(String[] args) {
-		// Parse the document
+	// Parse the document
         OpenDocument doc = OpenDocumentParser.parse("F:/my_serious_files/template.odt");
 		
-		// Replace all occurences of "{recipient}" by "M. Dupont"
-	    doc.getContentRoot().replaceAll("{recipient}", "M. Dupont");
+	// Replace all occurences of "{recipient}" by "M. Dupont"
+	doc.getContentRoot().replaceAll("{recipient}", "M. Dupont");
 		
-		// Change the amount of edit cycles
-	    doc.getMeta().setEditingCycles(1);
+	// Change the amount of edit cycles
+	doc.getMeta().setEditingCycles(1);
 		
-		// Save the template
+	// Save the template
         doc.applyAllChanges();
         doc.recreateFile("F:/my_serious_files/invoice_Dupont.odt");
 		
-		// Export images for some reason ?
+	// Export images for some reason ?
         for(ImageNode image : doc.getAllOfType(ImageNode.class))
-			image.exportImage(doc, "F:/random_files/" + image.getImageName());
+	    image.exportImage(doc, "F:/random_files/" + image.getImageName());
     }
 }
 ````
